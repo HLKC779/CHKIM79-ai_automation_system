@@ -19,7 +19,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
     "react-query": "^3.39.3",
-    "react-virtual": "^2.10.4",
+    "@tanstack/react-query": "^4.29.0",
     "react-window": "^1.8.8",
     "lodash-es": "^4.17.21",
     "date-fns": "^2.29.3",
@@ -45,7 +45,6 @@
     "vite-bundle-analyzer": "^0.7.0",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-pwa": "^0.16.4",
-    "vite-plugin-critical": "^0.1.0",
     "web-vitals": "^3.3.1",
     "cssnano": "^6.0.1"
   },

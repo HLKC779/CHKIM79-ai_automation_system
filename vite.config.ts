@@ -86,7 +86,7 @@ export default defineConfig({
           'router': ['react-router-dom'],
           'query': ['react-query'],
           'utils': ['lodash-es', 'date-fns', 'clsx'],
-          'virtual': ['react-virtual', 'react-window']
+          'virtual': ['react-window']
         },
         // Optimize chunk naming for better caching
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -115,11 +115,6 @@ export default defineConfig({
   },
   // Optimize CSS
   css: {
-    postcss: {
-      plugins: [
-        require('tailwindcss'),
-        require('autoprefixer')
-      ]
-    }
+    postcss: './postcss.config.js'
   }
 })
