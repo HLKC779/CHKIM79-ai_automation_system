@@ -14,7 +14,19 @@ A high-performance AI automation system built with React, TypeScript, and Vite, 
 
 ## 🚀 Live Demo
 
-This application is deployed on Hugging Face Spaces and is available at: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+This application is deployed on multiple platforms:
+
+- **GitHub Pages**: https://[username].github.io/[repository-name]/
+- **Hugging Face Spaces**: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+
+## 🚀 One-Click Deployments
+
+This project includes automated deployment workflows that trigger on pushes to the main branch:
+
+- **GitHub Pages**: Automatically deploys to GitHub Pages with proper base path configuration
+- **Hugging Face Spaces**: Automatically deploys to Hugging Face Spaces for AI/ML community hosting
+
+Both deployments are configured with optimized build settings and proper environment variables.
 
 ## 🛠️ Tech Stack
 
@@ -78,3 +90,25 @@ This application is automatically deployed to Hugging Face Spaces. The deploymen
 - Provide a seamless user experience
 
 For more information about Hugging Face Spaces, visit: https://huggingface.co/docs/hub/spaces
+
+## 🔧 Deployment Configuration
+
+### Environment Variables
+
+- `VITE_BASE`: Base path for the application (set automatically by deployment workflows)
+  - GitHub Pages: `/${{ github.event.repository.name }}/`
+  - Hugging Face Spaces: `/`
+
+### Required Secrets
+
+For the deployment workflows to work, you need to set up the following secrets in your GitHub repository:
+
+1. **HUGGINGFACE_TOKEN**: Your Hugging Face API token for deploying to Spaces
+   - Generate at: https://huggingface.co/settings/tokens
+   - Add to: Repository Settings → Secrets and variables → Actions
+
+### Workflow Files
+
+- `.github/workflows/deploy-pages.yml`: GitHub Pages deployment
+- `.github/workflows/deploy-hf-space.yml`: Hugging Face Spaces deployment
+- `.github/workflows/npm-publish.yml`: NPM package publishing (for releases)
