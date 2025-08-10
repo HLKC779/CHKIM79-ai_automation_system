@@ -1,0 +1,70 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  HF_SPACE_ID: ${{ secrets.HF_SPACE_ID }}
+  HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+
+jobs:
+  build-and-deploy:
+    if: ${{ env.HF_SPACE_ID != '' && env.HUGGINGFACE_TOKEN != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for Hugging Face (base=/)
+        run: npm run build
+        env:
+          VITE_BASE: /
+
+      - name: Include README with Space metadata
+        run: |
+          cp README.md dist/README.md
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install huggingface_hub
+        run: pip install --upgrade huggingface_hub
+
+      - name: Deploy to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+        run: |
+          python - << 'PY'
+          import os
+          from huggingface_hub import HfApi, create_repo, upload_folder
+
+          token = os.environ["HF_TOKEN"]
+          repo_id = os.environ["HF_SPACE_ID"]
+
+          api = HfApi(token=token)
+          # Ensure the Space exists and is set to static SDK
+          create_repo(repo_id=repo_id, repo_type="space", exist_ok=True, space_sdk="static")
+
+          # Upload the built static site
+          upload_folder(
+              repo_id=repo_id,
+              repo_type="space",
+              folder_path="dist",
+              path_in_repo=".",
+              commit_message="Deploy static build",
+              token=token,
+          )
+          PY

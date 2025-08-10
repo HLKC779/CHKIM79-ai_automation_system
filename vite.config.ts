@@ -59,6 +59,7 @@ export default defineConfig({
       ext: '.br'
     })
   ],
+  base: process.env.VITE_BASE || '/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

@@ -70,6 +70,23 @@ src/
 └── types/              # TypeScript type definitions
 ```
 
+## 🚀 One-Click Deploy
+
+- **GitHub Pages**: Uses a workflow that sets `VITE_BASE` automatically to `/<repo-name>/` so assets resolve correctly on Pages.
+  - Run: Go to the GitHub Actions page for this repo and trigger “Deploy to GitHub Pages”.
+  - Link: `[Actions > Deploy to GitHub Pages](https://github.com/OWNER/REPO/actions/workflows/deploy-pages.yml)`
+
+- **Hugging Face Spaces**: Builds with base `/` and uploads the `dist` folder to a Static Space.
+  - Before first run, set repository secrets:
+    - `HF_SPACE_ID`: e.g. `username/space-name`
+    - `HUGGINGFACE_TOKEN`: a write token from your Hugging Face account
+  - Run: Go to the GitHub Actions page and trigger “Deploy to Hugging Face Space”.
+  - Link: `[Actions > Deploy to Hugging Face Space](https://github.com/OWNER/REPO/actions/workflows/deploy-hf-space.yml)`
+
+Notes:
+- Local builds can override the base via `VITE_BASE` env var. For example: `VITE_BASE=/my/base/ npm run build`.
+- The GitHub Pages workflow handles `VITE_BASE` for you automatically.
+
 ## 🤗 Hugging Face Spaces
 
 This application is automatically deployed to Hugging Face Spaces. The deployment is configured to:
