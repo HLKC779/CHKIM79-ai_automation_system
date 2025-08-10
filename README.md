@@ -1,3 +1,5 @@
+# AI Text to Speech (TTS)
+🤖 Modern AI Text-to-Speech automation system with privacy-first design. Features cross-platform support, on-device processing, cloud integration, and a sleek React web interface. Perfect for developers building accessible applications or anyone wanting high-quality TTS without compromising privacy.
 ---
 title: AI Automation System
 emoji: 🤖
@@ -8,9 +10,15 @@ pinned: false
 license: mit
 ---
 
-# AI Text to Speech (TTS)
-
 Modern, privacy-first TTS with On-device and Cloud modes.
+	* text-to-speech
+	* ai-automation
+	* react
+	* typescript
+	* privacy-first
+	* cross-platform
+	* accessibility
+	* pwa
 
 ## Run locally
 
