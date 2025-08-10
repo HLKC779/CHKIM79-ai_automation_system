@@ -1,20 +1,26 @@
-# Deployment Guide - Hugging Face Spaces
+# Deployment Guide - Hugging Face Spaces & GitHub Pages
 
-This guide will help you deploy your AI Automation System to Hugging Face Spaces.
+This guide will help you deploy your AI Automation System to both Hugging Face Spaces and GitHub Pages.
 
 ## 🚀 Quick Deployment
 
-### 1. Prepare Your Repository
+### Prerequisites
 
-Make sure your repository contains:
-- ✅ `package.json` with build scripts
-- ✅ `vite.config.ts` for Vite configuration
-- ✅ `README.md` with Hugging Face Spaces metadata
-- ✅ `.gitignore` to exclude unnecessary files
-- ✅ All source code in the `src/` directory
+1. **GitHub Repository**: Ensure your code is in a GitHub repository at `HLKC779/ai-automation-system`
+2. **Hugging Face Account**: Make sure you have access to `CHKIM79` on Hugging Face
+3. **GitHub Secrets**: Set up required secrets in your GitHub repository
 
-### 2. Create a Hugging Face Space
+### Required GitHub Secrets
 
+Go to your GitHub repository → Settings → Secrets and variables → Actions, and add:
+
+1. **HF_TOKEN**: Your Hugging Face access token
+   - Get it from: https://huggingface.co/settings/tokens
+   - This token needs write access to create/update spaces
+
+### 1. Hugging Face Spaces Setup
+
+#### Option A: Manual Creation (Recommended for first time)
 1. Go to [Hugging Face Spaces](https://huggingface.co/spaces)
 2. Click "Create new Space"
 3. Choose your repository: `CHKIM79/ai-automation-system`
@@ -22,43 +28,25 @@ Make sure your repository contains:
 5. Select **License**: `MIT`
 6. Click "Create Space"
 
-### 3. Configure the Space
+#### Option B: Automatic Creation via GitHub Actions
+The GitHub Actions workflow will automatically create the space if it doesn't exist.
 
-The Space will automatically:
-- Detect your React/Vite application
-- Install dependencies from `package.json`
-- Run the build command: `npm run build`
-- Serve static files from the `dist/` directory
+### 2. GitHub Pages Setup
 
-### 4. Custom Build Configuration (Optional)
+1. Go to your GitHub repository → Settings → Pages
+2. Set **Source** to "GitHub Actions"
+3. The workflow will automatically deploy to GitHub Pages
 
-If you need custom build settings, create a `.github/workflows/deploy.yml` file:
+### 3. Automated Deployment
 
-```yaml
-name: Deploy to Hugging Face Spaces
+Once set up, the deployment is fully automated:
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm run build
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-files
-          path: dist/
-```
+1. Push to `main` or `master` branch
+2. GitHub Actions will:
+   - Install dependencies
+   - Run type checking and linting
+   - Build the application
+   - Deploy to both Hugging Face Spaces and GitHub Pages
 
 ## 📊 Build Information
 
@@ -69,14 +57,72 @@ Your application builds successfully with:
 - **PWA Support**: Service worker for offline functionality
 - **Compression**: Gzip and Brotli compression enabled
 
+## 🔧 Manual Deployment
+
+### Local Build and Test
+
+```bash
+# Install dependencies
+npm install
+
+# Run type checking
+npm run type-check
+
+# Run linting
+npm run lint
+
+# Build the application
+npm run build
+
+# Preview the build
+npm run preview
+```
+
+### Manual Hugging Face Deployment
+
+```bash
+# Install Hugging Face CLI
+pip install huggingface_hub
+
+# Login to Hugging Face
+huggingface-cli login
+
+# Upload to your space
+huggingface-cli upload CHKIM79/ai-automation-system dist/ --repo-type space
+```
+
+## 🌐 Access Your Applications
+
+Once deployed, your applications will be available at:
+
+- **Hugging Face Spaces**: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+- **GitHub Pages**: https://hlkc779.github.io/ai-automation-system
+
 ## 🔧 Troubleshooting
 
 ### Common Issues
 
-1. **Build Fails**: Check that all dependencies are compatible
-2. **Missing Files**: Ensure all source files are committed
-3. **CSS Issues**: Verify Tailwind CSS configuration
-4. **Performance**: Monitor bundle size and loading times
+1. **Build Fails**: 
+   - Check that all dependencies are compatible
+   - Verify Node.js version (requires 16+)
+   - Check for TypeScript errors
+
+2. **Missing Files**: 
+   - Ensure all source files are committed
+   - Check `.gitignore` doesn't exclude necessary files
+
+3. **CSS Issues**: 
+   - Verify Tailwind CSS configuration
+   - Check PostCSS configuration
+
+4. **Performance**: 
+   - Monitor bundle size and loading times
+   - Use `npm run analyze` to inspect bundle
+
+5. **Deployment Issues**:
+   - Check GitHub Actions logs
+   - Verify secrets are properly configured
+   - Ensure repository permissions are correct
 
 ### Performance Optimization
 
@@ -86,25 +132,33 @@ The application is already optimized with:
 - Efficient caching strategies
 - PWA capabilities for offline use
 
-## 🌐 Access Your Application
-
-Once deployed, your application will be available at:
-**https://huggingface.co/spaces/CHKIM79/ai-automation-system**
-
 ## 📝 Maintenance
 
-- Monitor the Space's build logs for any issues
+- Monitor the build logs for any issues
 - Update dependencies regularly
 - Test the application after major changes
 - Keep the README.md updated with current information
+- Monitor both deployment platforms for uptime
 
 ## 🆘 Support
 
 If you encounter issues:
-1. Check the build logs in your Hugging Face Space
-2. Verify all dependencies are properly installed
-3. Ensure your code builds locally before pushing
-4. Contact Hugging Face support if needed
+
+1. **GitHub Actions**: Check the Actions tab in your repository
+2. **Hugging Face**: Check the Space's build logs
+3. **Local Build**: Test locally before pushing
+4. **Dependencies**: Verify all dependencies are properly installed
+5. **Secrets**: Ensure GitHub secrets are correctly configured
+
+## 🔄 Continuous Deployment
+
+The project is configured for continuous deployment:
+
+- **Trigger**: Push to main/master branch
+- **Build**: Automatic dependency installation and build
+- **Test**: Type checking and linting
+- **Deploy**: Automatic deployment to both platforms
+- **Status**: Check deployment status in GitHub Actions
 
 ---
 

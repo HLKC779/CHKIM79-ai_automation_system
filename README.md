@@ -6,15 +6,19 @@ colorTo: purple
 sdk: static
 pinned: false
 license: mit
+app_port: 7860
 ---
 
 # AI Automation System
 
 A high-performance AI automation system built with React, TypeScript, and Vite, featuring optimized bundle size, fast load times, and efficient runtime performance.
 
-## 🚀 Live Demo
+## 🚀 Live Demos
 
-This application is deployed on Hugging Face Spaces and is available at: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+This application is deployed on multiple platforms:
+
+- **Hugging Face Spaces**: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+- **GitHub Pages**: https://hlkc779.github.io/ai-automation-system
 
 ## 🛠️ Tech Stack
 
@@ -35,7 +39,7 @@ This application is deployed on Hugging Face Spaces and is available at: https:/
 ### Installation
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/HLKC779/ai-automation-system.git
 cd ai-automation-system
 
 # Install dependencies
@@ -78,3 +82,13 @@ This application is automatically deployed to Hugging Face Spaces. The deploymen
 - Provide a seamless user experience
 
 For more information about Hugging Face Spaces, visit: https://huggingface.co/docs/hub/spaces
+
+## 📦 GitHub Pages
+
+The application is also deployed to GitHub Pages for additional accessibility and hosting redundancy.
+
+## 🔧 Deployment
+
+The project uses GitHub Actions for automated deployment to both platforms. Simply push to the main branch to trigger deployment.
+
+For more information about deployment, see [DEPLOYMENT.md](./DEPLOYMENT.md).
