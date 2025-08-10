@@ -11,6 +11,8 @@ const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const AutomationList = lazy(() => import('@/pages/AutomationList'))
 const AutomationDetail = lazy(() => import('@/pages/AutomationDetail'))
 const Settings = lazy(() => import('@/pages/Settings'))
+const AIChat = lazy(() => import('@/components/AIChat'))
+const Demo = lazy(() => import('@/pages/Demo'))
 
 // Performance monitoring hook
 const useAppPerformance = () => {
@@ -44,7 +46,10 @@ function App() {
         <main className="container mx-auto px-4 py-8">
           <Suspense fallback={<LoadingSpinner />}>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Demo />} />
+              <Route path="/demo" element={<Demo />} />
+              <Route path="/chat" element={<AIChat />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/automations" element={<AutomationList />} />
               <Route path="/automations/:id" element={<AutomationDetail />} />
               <Route path="/settings" element={<Settings />} />
