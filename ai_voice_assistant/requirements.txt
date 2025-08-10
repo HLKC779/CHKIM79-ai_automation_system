@@ -1,0 +1,19 @@
+transformers>=4.42.0
+accelerate>=0.33.0
+bitsandbytes>=0.43.0; platform_system != "Windows"
+torch>=2.3.0
+sentencepiece>=0.1.99
+
+# TTS
+datasets>=2.19.0
+scipy>=1.11.0
+sounddevice>=0.4.6
+
+# Optional CUDA performance
+xformers>=0.0.26.post1; platform_system != "Windows"
+
+# Whisper ASR pipeline dependencies
+ffmpeg-python>=0.2.0
+
+# CLI niceties
+rich>=13.7.1
