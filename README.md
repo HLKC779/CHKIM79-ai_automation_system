@@ -4,6 +4,8 @@ emoji: 🤖
 colorFrom: blue
 colorTo: purple
 sdk: static
+build_command: npm install && npm run build
+build_output_dir: dist
 pinned: false
 license: mit
 ---
