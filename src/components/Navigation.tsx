@@ -9,8 +9,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { path: '/', label: 'Dashboard', icon: '📊' },
-  { path: '/automations', label: 'Automations', icon: '🤖' },
+  { path: '/', label: 'AI Demo', icon: '🤖' },
+  { path: '/chat', label: 'Full AI Chat', icon: '💬' },
+  { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+  { path: '/automations', label: 'Automations', icon: '⚡' },
   { path: '/settings', label: 'Settings', icon: '⚙️' }
 ]
 
@@ -39,7 +41,7 @@ const Navigation = memo(() => {
             onClick={() => handleNavClick('/')}
           >
             <span className="text-2xl">🚀</span>
-            <span>AI Auto</span>
+            <span>AI Assistant</span>
           </Link>
 
           {/* Navigation Links */}

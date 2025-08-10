@@ -24,7 +24,10 @@
     "lodash-es": "^4.17.21",
     "date-fns": "^2.29.3",
     "clsx": "^1.2.1",
-    "tailwind-merge": "^1.13.2"
+    "tailwind-merge": "^1.13.2",
+    "@huggingface/inference": "^2.6.4",
+    "lucide-react": "^0.263.1",
+    "framer-motion": "^10.16.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
