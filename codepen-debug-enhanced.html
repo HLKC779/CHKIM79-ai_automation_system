@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced CodePen Debug - QC Fine-tune Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background: #0056b3;
+        }
+        
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced CodePen Debug - QC Fine-tune Test</h1>
+        <p>This version addresses common CodePen issues and provides comprehensive debugging.</p>
+        
+        <div class="test-section">
+            <h3>Test 1: Inline onclick handlers</h3>
+            <button class="button" onclick="testFunction1()">Test Function 1 (inline)</button>
+            <button class="button" onclick="testFunction2()">Test Function 2 (inline)</button>
+            <button class="button" onclick="testFunction3()">Test Function 3 (inline)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 2: addEventListener approach</h3>
+            <button class="button" id="btn1">Test Function 1 (addEventListener)</button>
+            <button class="button" id="btn2">Test Function 2 (addEventListener)</button>
+            <button class="button" id="btn3">Test Function 3 (addEventListener)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 3: Global scope test</h3>
+            <button class="button" onclick="window.testGlobalFunction()">Global Function Test</button>
+            <button class="button" onclick="console.log('Direct console test')">Direct Console Test</button>
+        </div>
+        
+        <button class="button" onclick="clearOutput()">Clear Output</button>
+        <button class="button" onclick="runDiagnostics()">Run Full Diagnostics</button>
+        
+        <div class="output" id="output">
+            <p>Output will appear here...</p>
+        </div>
+        
+        <div class="debug-info" id="debugInfo">
+            <h3>Debug Information:</h3>
+            <p>Initializing...</p>
+        </div>
+        
+        <div class="console-output" id="consoleOutput">
+            <p>Console output will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        // Override console.log to capture output
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        
+        function captureConsole(type, ...args) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            consoleOutput.innerHTML += `<p>[${timestamp}] ${type.toUpperCase()}: ${message}</p>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            captureConsole('log', ...args);
+            originalConsoleLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            captureConsole('error', ...args);
+            originalConsoleError.apply(console, args);
+        };
+        
+        // Debug function to check if JavaScript is running
+        console.log('JavaScript is loaded and running');
+        
+        // Function to update output
+        function updateOutput(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            output.innerHTML += `<p class="${className}">[${timestamp}] ${message}</p>`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Function to update debug info
+        function updateDebugInfo(message, type = 'info') {
+            const debugInfo = document.getElementById('debugInfo');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            debugInfo.innerHTML += `<p class="${className}">${message}</p>`;
+        }
+        
+        // Test functions - multiple approaches
+        function testFunction1() {
+            console.log('testFunction1 called');
+            updateOutput('Function 1 executed successfully!', 'success');
+        }
+        
+        function testFunction2() {
+            console.log('testFunction2 called');
+            updateOutput('Function 2 executed successfully!', 'success');
+        }
+        
+        function testFunction3() {
+            console.log('testFunction3 called');
+            updateOutput('Function 3 executed successfully!', 'success');
+        }
+        
+        function clearOutput() {
+            console.log('clearOutput called');
+            document.getElementById('output').innerHTML = '<p>Output cleared...</p>';
+            document.getElementById('consoleOutput').innerHTML = '<p>Console output cleared...</p>';
+        }
+        
+        // Global scope test function
+        window.testGlobalFunction = function() {
+            console.log('Global function called');
+            updateOutput('Global function executed successfully!', 'success');
+        };
+        
+        // Run comprehensive diagnostics
+        function runDiagnostics() {
+            console.log('Running full diagnostics...');
+            updateOutput('Running full diagnostics...', 'info');
+            
+            // Test function accessibility
+            const functions = ['testFunction1', 'testFunction2', 'testFunction3', 'clearOutput', 'runDiagnostics'];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    updateDebugInfo(`✅ ${funcName} is accessible in global scope`, 'success');
+                } else {
+                    updateDebugInfo(`❌ ${funcName} is NOT accessible in global scope`, 'error');
+                }
+            });
+            
+            // Test DOM elements
+            const elements = ['output', 'debugInfo', 'consoleOutput', 'btn1', 'btn2', 'btn3'];
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    updateDebugInfo(`✅ Element #${elementId} exists`, 'success');
+                } else {
+                    updateDebugInfo(`❌ Element #${elementId} does NOT exist`, 'error');
+                }
+            });
+            
+            // Test event listeners
+            try {
+                const btn1 = document.getElementById('btn1');
+                if (btn1) {
+                    btn1.addEventListener('click', function() {
+                        console.log('addEventListener test successful');
+                        updateOutput('addEventListener test successful!', 'success');
+                    });
+                    updateDebugInfo('✅ addEventListener test setup complete', 'success');
+                }
+            } catch (error) {
+                updateDebugInfo(`❌ addEventListener test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded');
+            updateDebugInfo('✅ DOM loaded successfully', 'success');
+            updateDebugInfo('✅ JavaScript functions are defined', 'success');
+            updateDebugInfo('✅ Event listeners should be working', 'success');
+            
+            // Set up addEventListener buttons
+            const btn1 = document.getElementById('btn1');
+            const btn2 = document.getElementById('btn2');
+            const btn3 = document.getElementById('btn3');
+            
+            if (btn1) {
+                btn1.addEventListener('click', testFunction1);
+                updateDebugInfo('✅ Button 1 event listener attached', 'success');
+            }
+            
+            if (btn2) {
+                btn2.addEventListener('click', testFunction2);
+                updateDebugInfo('✅ Button 2 event listener attached', 'success');
+            }
+            
+            if (btn3) {
+                btn3.addEventListener('click', testFunction3);
+                updateDebugInfo('✅ Button 3 event listener attached', 'success');
+            }
+            
+            // Test if functions are accessible
+            if (typeof testFunction1 === 'function') {
+                updateDebugInfo('✅ testFunction1 is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ testFunction1 is NOT accessible', 'error');
+            }
+            
+            if (typeof testFunction2 === 'function') {
+                updateDebugInfo('✅ testFunction2 is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ testFunction2 is NOT accessible', 'error');
+            }
+            
+            if (typeof testFunction3 === 'function') {
+                updateDebugInfo('✅ testFunction3 is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ testFunction3 is NOT accessible', 'error');
+            }
+            
+            // Test global scope
+            if (typeof window.testGlobalFunction === 'function') {
+                updateDebugInfo('✅ Global function is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ Global function is NOT accessible', 'error');
+            }
+        });
+        
+        // Additional error handling
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            updateDebugInfo(`❌ JavaScript error: ${e.message}`, 'error');
+        });
+        
+        // Test immediate execution
+        console.log('Script loaded, testing immediate execution...');
+        updateOutput('Script loaded and ready for testing', 'success');
+    </script>
+</body>
+</html>
