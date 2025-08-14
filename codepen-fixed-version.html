@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed CodePen Version - QC Fine-tune Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .button {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .test-section {
+            margin: 25px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .test-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .output {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            min-height: 150px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .debug-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+        
+        .fix-summary {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .fix-summary h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .fix-summary ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .fix-summary li {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Fixed CodePen Version - QC Fine-tune Test</h1>
+            <p>This version addresses all common CodePen issues and ensures buttons work properly</p>
+        </div>
+        
+        <div class="fix-summary">
+            <h3>✅ Issues Fixed:</h3>
+            <ul>
+                <li><strong>Global Scope:</strong> All functions are explicitly added to window object</li>
+                <li><strong>Event Handling:</strong> Multiple approaches (onclick + addEventListener)</li>
+                <li><strong>Error Prevention:</strong> Comprehensive error handling and validation</li>
+                <li><strong>CodePen Compatibility:</strong> Designed specifically for CodePen environment</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Test 1: Fixed Global Scope Functions</h3>
+            <button class="button" onclick="window.qcFunction1()">QC Function 1 (Global)</button>
+            <button class="button" onclick="window.qcFunction2()">QC Function 2 (Global)</button>
+            <button class="button" onclick="window.qcFunction3()">QC Function 3 (Global)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Test 2: addEventListener Approach (Most Reliable)</h3>
+            <button class="button" id="qcBtn1">QC Function 1 (addEventListener)</button>
+            <button class="button" id="qcBtn2">QC Function 2 (addEventListener)</button>
+            <button class="button" id="qcBtn3">QC Function 3 (addEventListener)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Test 3: Direct DOM Manipulation</h3>
+            <button class="button" onclick="window.testDirectDOM()">Test Direct DOM</button>
+            <button class="button" onclick="window.testConsole()">Test Console</button>
+            <button class="button" onclick="window.testAlert()">Test Alert</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Test 4: Utility Functions</h3>
+            <button class="button" onclick="window.clearAllOutput()">Clear All Output</button>
+            <button class="button" onclick="window.runFullDiagnostics()">Run Full Diagnostics</button>
+            <button class="button" onclick="window.testAllFunctions()">Test All Functions</button>
+        </div>
+        
+        <div class="output" id="output">
+            <p>Output will appear here...</p>
+        </div>
+        
+        <div class="debug-info" id="debugInfo">
+            <h3>🔍 Debug Information:</h3>
+            <p>Initializing comprehensive diagnostics...</p>
+        </div>
+        
+        <div class="console-output" id="consoleOutput">
+            <p>Console output will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        // ===== GLOBAL SCOPE FUNCTIONS (CodePen Compatible) =====
+        
+        // QC Test Functions
+        window.qcFunction1 = function() {
+            console.log('QC Function 1 executed successfully');
+            updateOutput('✅ QC Function 1 executed successfully!', 'success');
+        };
+        
+        window.qcFunction2 = function() {
+            console.log('QC Function 2 executed successfully');
+            updateOutput('✅ QC Function 2 executed successfully!', 'success');
+        };
+        
+        window.qcFunction3 = function() {
+            console.log('QC Function 3 executed successfully');
+            updateOutput('✅ QC Function 3 executed successfully!', 'success');
+        };
+        
+        // Test Functions
+        window.testDirectDOM = function() {
+            console.log('Testing direct DOM manipulation');
+            const output = document.getElementById('output');
+            output.innerHTML += '<p>✅ Direct DOM manipulation works!</p>';
+        };
+        
+        window.testConsole = function() {
+            console.log('Console test successful!');
+            updateOutput('✅ Console test successful!', 'success');
+        };
+        
+        window.testAlert = function() {
+            alert('Alert test successful!');
+            updateOutput('✅ Alert test successful!', 'success');
+        };
+        
+        // Utility Functions
+        window.clearAllOutput = function() {
+            console.log('Clearing all output');
+            document.getElementById('output').innerHTML = '<p>Output cleared...</p>';
+            document.getElementById('consoleOutput').innerHTML = '<p>Console output cleared...</p>';
+            updateOutput('All output cleared', 'info');
+        };
+        
+        window.runFullDiagnostics = function() {
+            console.log('Running full diagnostics...');
+            updateOutput('🔍 Running full diagnostics...', 'info');
+            
+            // Test all functions
+            const functions = ['qcFunction1', 'qcFunction2', 'qcFunction3', 'testDirectDOM', 'testConsole', 'testAlert'];
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    updateDebugInfo(`<span class="status-indicator status-success"></span>${funcName} is accessible`, 'success');
+                } else {
+                    updateDebugInfo(`<span class="status-indicator status-error"></span>${funcName} is NOT accessible`, 'error');
+                }
+            });
+            
+            // Test DOM elements
+            const elements = ['output', 'debugInfo', 'consoleOutput', 'qcBtn1', 'qcBtn2', 'qcBtn3'];
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    updateDebugInfo(`<span class="status-indicator status-success"></span>Element #${elementId} exists`, 'success');
+                } else {
+                    updateDebugInfo(`<span class="status-indicator status-error"></span>Element #${elementId} does NOT exist`, 'error');
+                }
+            });
+            
+            updateOutput('✅ Full diagnostics completed', 'success');
+        };
+        
+        window.testAllFunctions = function() {
+            console.log('Testing all functions...');
+            updateOutput('🧪 Testing all functions...', 'info');
+            
+            // Test each function
+            setTimeout(() => window.qcFunction1(), 100);
+            setTimeout(() => window.qcFunction2(), 200);
+            setTimeout(() => window.qcFunction3(), 300);
+            setTimeout(() => window.testDirectDOM(), 400);
+            setTimeout(() => window.testConsole(), 500);
+            
+            updateOutput('✅ All function tests initiated', 'success');
+        };
+        
+        // ===== UTILITY FUNCTIONS =====
+        function updateOutput(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            output.innerHTML += `<p class="${className}">[${timestamp}] ${message}</p>`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function updateDebugInfo(message, type = 'info') {
+            const debugInfo = document.getElementById('debugInfo');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            debugInfo.innerHTML += `<p class="${className}">${message}</p>`;
+        }
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded - Fixed CodePen version');
+            updateDebugInfo('<span class="status-indicator status-success"></span>DOM loaded successfully', 'success');
+            
+            // Set up addEventListener buttons
+            const buttons = [
+                { id: 'qcBtn1', func: window.qcFunction1 },
+                { id: 'qcBtn2', func: window.qcFunction2 },
+                { id: 'qcBtn3', func: window.qcFunction3 }
+            ];
+            
+            buttons.forEach(btn => {
+                const element = document.getElementById(btn.id);
+                if (element && typeof btn.func === 'function') {
+                    element.addEventListener('click', btn.func);
+                    updateDebugInfo(`<span class="status-indicator status-success"></span>${btn.id} event listener attached`, 'success');
+                } else {
+                    updateDebugInfo(`<span class="status-indicator status-error"></span>Failed to attach listener to ${btn.id}`, 'error');
+                }
+            });
+            
+            // Verify global scope
+            const globalFunctions = ['qcFunction1', 'qcFunction2', 'qcFunction3'];
+            globalFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    updateDebugInfo(`<span class="status-indicator status-success"></span>${funcName} is in global scope`, 'success');
+                } else {
+                    updateDebugInfo(`<span class="status-indicator status-error"></span>${funcName} is NOT in global scope`, 'error');
+                }
+            });
+            
+            updateOutput('🚀 Fixed CodePen version initialized successfully!', 'success');
+        });
+        
+        // ===== ERROR HANDLING =====
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            updateDebugInfo(`<span class="status-indicator status-error"></span>JavaScript error: ${e.message}`, 'error');
+        });
+        
+        // ===== IMMEDIATE INITIALIZATION =====
+        console.log('Fixed CodePen version script loaded');
+        updateOutput('📦 Fixed CodePen version script loaded and ready', 'success');
+        
+        // Immediate global scope test
+        if (typeof window.qcFunction1 === 'function') {
+            console.log('QC functions are immediately available in global scope');
+        } else {
+            console.log('QC functions are NOT immediately available in global scope');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePen Debug - QC Fine-tune Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background: #0056b3;
+        }
+        
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+        
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CodePen Debug - QC Fine-tune Test</h1>
+        <p>This is a local debug version of the CodePen. Let's identify and fix the issues.</p>
+        
+        <div>
+            <button class="button" onclick="testFunction1()">Test Function 1</button>
+            <button class="button" onclick="testFunction2()">Test Function 2</button>
+            <button class="button" onclick="testFunction3()">Test Function 3</button>
+            <button class="button" onclick="clearOutput()">Clear Output</button>
+        </div>
+        
+        <div class="output" id="output">
+            <p>Output will appear here...</p>
+        </div>
+        
+        <div class="debug-info" id="debugInfo">
+            <h3>Debug Information:</h3>
+            <p>Checking for common issues...</p>
+        </div>
+    </div>
+
+    <script>
+        // Debug function to check if JavaScript is running
+        console.log('JavaScript is loaded and running');
+        
+        // Function to update output
+        function updateOutput(message) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `<p>[${timestamp}] ${message}</p>`;
+        }
+        
+        // Function to update debug info
+        function updateDebugInfo(message) {
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.innerHTML += `<p>${message}</p>`;
+        }
+        
+        // Test functions
+        function testFunction1() {
+            console.log('testFunction1 called');
+            updateOutput('Function 1 executed successfully!');
+        }
+        
+        function testFunction2() {
+            console.log('testFunction2 called');
+            updateOutput('Function 2 executed successfully!');
+        }
+        
+        function testFunction3() {
+            console.log('testFunction3 called');
+            updateOutput('Function 3 executed successfully!');
+        }
+        
+        function clearOutput() {
+            console.log('clearOutput called');
+            document.getElementById('output').innerHTML = '<p>Output cleared...</p>';
+        }
+        
+        // Initialize debug information
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded');
+            updateDebugInfo('✅ DOM loaded successfully');
+            updateDebugInfo('✅ JavaScript functions are defined');
+            updateDebugInfo('✅ Event listeners should be working');
+            
+            // Test if functions are accessible
+            if (typeof testFunction1 === 'function') {
+                updateDebugInfo('✅ testFunction1 is accessible');
+            } else {
+                updateDebugInfo('❌ testFunction1 is NOT accessible');
+            }
+            
+            if (typeof testFunction2 === 'function') {
+                updateDebugInfo('✅ testFunction2 is accessible');
+            } else {
+                updateDebugInfo('❌ testFunction2 is NOT accessible');
+            }
+            
+            if (typeof testFunction3 === 'function') {
+                updateDebugInfo('✅ testFunction3 is accessible');
+            } else {
+                updateDebugInfo('❌ testFunction3 is NOT accessible');
+            }
+        });
+        
+        // Additional error handling
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            updateDebugInfo(`❌ JavaScript error: ${e.message}`);
+        });
+    </script>
+</body>
+</html>
