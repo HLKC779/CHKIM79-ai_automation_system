@@ -8,124 +8,278 @@ pinned: false
 license: mit
 ---
 
-# AI Automation System
+# Multi-Agent AI Financial Management System
 
-A high-performance AI automation system built with React, TypeScript, and Vite, featuring optimized bundle size, fast load times, and efficient runtime performance.
+A comprehensive AI-powered financial management system featuring multiple specialized agents for accounting, inventory management, mortgage processing, insurance, Web3 integration, and more.
 
-## 🚀 Live Demo
+## 🌟 Features
 
-This application is deployed on multiple platforms:
+### AI-Powered Agents
 
-- **GitHub Pages**: https://[username].github.io/[repository-name]/
-- **Hugging Face Spaces**: https://huggingface.co/spaces/CHKIM79/ai-automation-system
+- **🤖 Accounting Agent**: Automated transaction management, financial reporting, and account reconciliation
+- **📦 Inventory Agent**: Stock tracking, low-stock alerts, and inventory optimization
+- **🏠 Mortgage Agent**: Loan application processing, risk assessment, and payment calculations
+- **💰 Finance Agent**: Portfolio analysis, budget recommendations, and retirement planning
+- **🛡️ Insurance Agent**: Policy quotes, claims processing, and risk evaluation
+- **🔗 Web3 Agent**: Blockchain transactions, wallet management, and DeFi portfolio analysis
+- **🌐 Web Scraping Agent**: Real-time market data collection for stocks and cryptocurrencies
 
-## 🚀 One-Click Deployments
+### Core Capabilities
 
-This project includes automated deployment workflows that trigger on pushes to the main branch:
+- **AI Models**: Uses Hugging Face models for text generation, sentiment analysis, and expense categorization
+- **Automated Scheduling**: Scheduled tasks for reports, alerts, and data collection
+- **Database Management**: SQLite database for persistent storage
+- **Real-time Analysis**: Live market data and portfolio performance tracking
+- **No API Keys Required**: Uses open-source models that download automatically
 
-- **GitHub Pages**: Automatically deploys to GitHub Pages with proper base path configuration
-- **Hugging Face Spaces**: Automatically deploys to Hugging Face Spaces for AI/ML community hosting
-
-Both deployments are configured with optimized build settings and proper environment variables.
-
-## 🛠️ Tech Stack
-
-- **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite 4 (ultra-fast development and optimized builds)
-- **Styling**: Tailwind CSS with optimized purging
-- **State Management**: React Query for server state
-- **Routing**: React Router with lazy loading
-- **Performance**: React Window, Web Vitals, Performance API
-- **PWA**: Service Worker with intelligent caching
-
-## 🚀 Quick Start
+## 🚀 Installation
 
 ### Prerequisites
-- Node.js 16+ 
-- npm or yarn
 
-### Installation
+- Python 3.8 or higher
+- pip package manager
+- Git
+
+### Setup Instructions
+
+1. **Clone the repository**
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd ai-automation-system
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+git clone <your-repo-url>
+cd financial-system
 ```
 
-## 📊 Performance Features
+2. **Create a virtual environment (recommended)**
+```bash
+python -m venv venv
 
-- **Code Splitting**: Automatic route-based and component-based code splitting
-- **Tree Shaking**: Dead code elimination for smaller bundles
-- **Lazy Loading**: Components loaded on-demand to reduce initial bundle size
-- **Virtual Scrolling**: Efficient rendering of large lists
-- **Performance Monitoring**: Real-time performance metrics and Web Vitals tracking
+# On Windows
+venv\Scripts\activate
 
-## 📁 Project Structure
-
-```
-src/
-├── components/          # Reusable UI components
-├── pages/              # Page components
-├── hooks/              # Custom React hooks
-├── utils/              # Utility functions
-└── types/              # TypeScript type definitions
+# On macOS/Linux
+source venv/bin/activate
 ```
 
-## 🚀 One-Click Deploy
+3. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
 
-- **GitHub Pages**: Uses a workflow that sets `VITE_BASE` automatically to `/<repo-name>/` so assets resolve correctly on Pages.
-  - Run: Go to the GitHub Actions page for this repo and trigger “Deploy to GitHub Pages”.
-  - Link: `[Actions > Deploy to GitHub Pages](https://github.com/HLKC779/CHKIM79-ai_automation_system/actions/workflows/deploy-pages.yml)`
+**Note**: The first run will download AI models from Hugging Face (approximately 500MB-1GB). This is a one-time download.
 
-- **Hugging Face Spaces**: Builds with base `/` and uploads the `dist` folder to a Static Space.
-  - Before first run, set repository secrets:
-    - `HF_SPACE_ID`: e.g. `username/space-name`
-    - `HUGGINGFACE_TOKEN`: a write token from your Hugging Face account
-  - Run: Go to the GitHub Actions page and trigger “Deploy to Hugging Face Space”.
-  - Link: `[Actions > Deploy to Hugging Face Space](https://github.com/HLKC779/CHKIM79-ai_automation_system/actions/workflows/deploy-hf-space.yml)`
+## 🎯 Quick Start
 
-Notes:
-- Local builds can override the base via `VITE_BASE` env var. For example: `VITE_BASE=/my/base/ npm run build`.
-- The GitHub Pages workflow handles `VITE_BASE` for you automatically.
+### Run the Demo
 
-## 🤗 Hugging Face Spaces
+```bash
+python financial_system.py demo
+```
 
-This application is automatically deployed to Hugging Face Spaces. The deployment is configured to:
-- Build the application using Vite
-- Serve static files efficiently
-- Provide a seamless user experience
+This will run a comprehensive demonstration showcasing all system capabilities.
 
-For more information about Hugging Face Spaces, visit: https://huggingface.co/docs/hub/spaces
+### Interactive Mode
 
-## 🔧 Deployment Configuration
+```bash
+python financial_system.py
+```
 
-### Environment Variables
+This starts the system in interactive mode where you can manually execute commands.
 
-- `VITE_BASE`: Base path for the application (set automatically by deployment workflows)
-  - GitHub Pages: `/${{ github.event.repository.name }}/`
-  - Hugging Face Spaces: `/`
+## 📖 Usage Examples
 
-### Required Secrets
+### As a Python Module
 
-For the deployment workflows to work, you need to set up the following secrets in your GitHub repository:
+```python
+from financial_system import MultiAgentSystem
 
-1. **HUGGINGFACE_TOKEN**: Your Hugging Face API token for deploying to Spaces
-   - Generate at: https://huggingface.co/settings/tokens
-   - Add to: Repository Settings → Secrets and variables → Actions
+# Initialize the system
+system = MultiAgentSystem()
+system.start_system()
 
-### Workflow Files
+# Create a transaction
+result = system.process_command('create_transaction', {
+    'type': 'expense',
+    'amount': 150.50,
+    'description': 'Grocery shopping',
+    'account_id': 'checking_001'
+})
 
-- `.github/workflows/deploy-pages.yml`: GitHub Pages deployment
-- `.github/workflows/deploy-hf-space.yml`: Hugging Face Spaces deployment
-- `.github/workflows/npm-publish.yml`: NPM package publishing (for releases)
+# Generate financial report
+report = system.process_command('financial_report')
+print(f"Total Income: ${report['result']['summary']['total_income']}")
+
+# Calculate mortgage payment
+mortgage = system.process_command('calculate_mortgage', {
+    'principal': 300000,
+    'rate': 4.5,
+    'years': 30
+})
+print(f"Monthly Payment: ${mortgage['result']['monthly_payment']}")
+
+# Stop the system
+system.stop_system()
+```
+
+### Available Commands
+
+#### Accounting
+- `create_transaction` - Record income/expense transactions
+- `financial_report` - Generate comprehensive financial reports
+- `account_balance` - Check account balance
+
+#### Inventory Management
+- `add_inventory` - Add new inventory items
+- `update_inventory` - Update item quantities
+- `inventory_report` - Generate inventory status report
+
+#### Mortgage & Loans
+- `submit_loan` - Submit loan application with AI risk assessment
+- `calculate_mortgage` - Calculate mortgage payments and amortization
+
+#### Financial Planning
+- `analyze_portfolio` - Analyze stock portfolio performance
+- `budget_recommendation` - Get AI-powered budget advice
+- `retirement_planning` - Calculate retirement savings projections
+
+#### Insurance
+- `insurance_quote` - Generate insurance policy quotes
+- `process_claim` - Process insurance claims with AI analysis
+
+#### Web3 & Crypto
+- `create_wallet` - Create new blockchain wallet
+- `get_balance` - Check wallet balance
+- `gas_prices` - Get current gas prices
+
+#### Market Data
+- `scrape_stocks` - Get real-time stock prices
+- `scrape_crypto` - Get cryptocurrency prices
+
+#### AI Assistant
+- `ask_question` - Ask financial questions to the AI
+
+## 🏗️ System Architecture
+
+```
+Multi-Agent Financial System
+├── Database Manager (SQLite)
+├── AI Model Manager
+│   ├── GPT-2 (Text Generation)
+│   ├── FinBERT (Sentiment Analysis)
+│   └── BART (Classification)
+├── Agents
+│   ├── Accounting Agent
+│   ├── Inventory Agent
+│   ├── Mortgage Agent
+│   ├── Finance Agent
+│   ├── Insurance Agent
+│   ├── Web3 Agent
+│   └── Web Scraping Agent
+└── Task Scheduler
+    ├── Hourly: Market data scraping
+    ├── Daily: Financial reports
+    ├── Weekly: Account reconciliation
+    └── Monthly: Comprehensive reports
+```
+
+## 📊 Database Schema
+
+### Transactions Table
+- `id`: Unique transaction ID
+- `type`: income/expense
+- `amount`: Transaction amount
+- `category`: Auto-categorized by AI
+- `timestamp`: Transaction time
+- `account_id`: Associated account
+
+### Inventory Table
+- `id`: Item ID
+- `name`: Item name
+- `quantity`: Current stock
+- `unit_price`: Price per unit
+- `minimum_stock`: Low stock threshold
+
+### Loan Applications Table
+- `id`: Application ID
+- `applicant_name`: Applicant name
+- `loan_amount`: Requested amount
+- `credit_score`: Credit score
+- `status`: pending/approved/rejected
+- `risk_assessment`: AI risk analysis
+
+## 🔧 Configuration
+
+### AI Models
+The system automatically downloads models on first run. To use different models, modify the model names in `AIModelManager.load_models()`.
+
+### Database
+By default, uses SQLite with `financial_system.db`. To change:
+```python
+db_manager = DatabaseManager(db_path="your_database.db")
+```
+
+### Scheduled Tasks
+Modify scheduling in `TaskScheduler.start()`:
+```python
+schedule.every().hour.do(self._scrape_market_data)
+schedule.every().day.at("09:00").do(self._generate_daily_reports)
+```
+
+## 🔒 Security Considerations
+
+- **Private Keys**: The system generates wallet private keys. In production, these should be encrypted.
+- **Database**: Consider using encrypted SQLite or migrate to a secure database system.
+- **API Endpoints**: When exposing as API, implement proper authentication.
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Model Download Fails**
+   - Check internet connection
+   - Ensure sufficient disk space (1-2GB)
+   - Try manual download from Hugging Face
+
+2. **Import Errors**
+   - Ensure all dependencies are installed: `pip install -r requirements.txt`
+   - Check Python version (3.8+)
+
+3. **Database Errors**
+   - Ensure write permissions in the directory
+   - Delete `financial_system.db` to reset
+
+### Logging
+The system uses Python logging. To increase verbosity:
+```python
+logging.basicConfig(level=logging.DEBUG)
+```
+
+## 📈 Performance Tips
+
+- **Model Loading**: Models are loaded once at startup. For faster startup, comment out unused models.
+- **Database**: For better performance with large datasets, consider PostgreSQL.
+- **Scheduling**: Adjust task frequencies based on your needs.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Hugging Face for providing open-source AI models
+- Web3.py for blockchain integration
+- The open-source community for various libraries used
+
+## 📧 Contact
+
+For questions or support, please open an issue in the GitHub repository.
+
+---
+
+**Note**: This system is designed for educational and demonstration purposes. For production use, additional security measures, error handling, and scalability considerations should be implemented.
