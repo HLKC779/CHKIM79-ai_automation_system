@@ -11,6 +11,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { path: '/', label: 'Dashboard', icon: '📊' },
   { path: '/automations', label: 'Automations', icon: '🤖' },
+  { path: '/agents', label: 'Agents', icon: '🎭' },
   { path: '/settings', label: 'Settings', icon: '⚙️' }
 ]
 

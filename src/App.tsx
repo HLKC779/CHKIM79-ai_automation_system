@@ -11,6 +11,7 @@ const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const AutomationList = lazy(() => import('@/pages/AutomationList'))
 const AutomationDetail = lazy(() => import('@/pages/AutomationDetail'))
 const Settings = lazy(() => import('@/pages/Settings'))
+const AgentMonitoring = lazy(() => import('@/pages/AgentMonitoring'))
 
 // Performance monitoring hook
 const useAppPerformance = () => {
@@ -47,6 +48,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/automations" element={<AutomationList />} />
               <Route path="/automations/:id" element={<AutomationDetail />} />
+              <Route path="/agents" element={<AgentMonitoring />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </Suspense>
