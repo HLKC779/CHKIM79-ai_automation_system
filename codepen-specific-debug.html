@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodePen Specific Debug - QC Fine-tune Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background: #0056b3;
+        }
+        
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .fix-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CodePen Specific Debug - QC Fine-tune Test</h1>
+        <p>This version specifically addresses CodePen issues and provides fixes.</p>
+        
+        <div class="fix-section">
+            <h3>🔧 Common CodePen Issues & Fixes:</h3>
+            <ul>
+                <li><strong>Issue:</strong> Functions not in global scope</li>
+                <li><strong>Fix:</strong> Use <code>window.functionName = function()</code></li>
+                <li><strong>Issue:</strong> onclick handlers can't find functions</li>
+                <li><strong>Fix:</strong> Use addEventListener or ensure global scope</li>
+                <li><strong>Issue:</strong> Script loading order problems</li>
+                <li><strong>Fix:</strong> Use DOMContentLoaded or defer scripts</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 1: Original CodePen Style (likely broken)</h3>
+            <button class="button" onclick="testFunction1()">Test Function 1 (original)</button>
+            <button class="button" onclick="testFunction2()">Test Function 2 (original)</button>
+            <button class="button" onclick="testFunction3()">Test Function 3 (original)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 2: Fixed Global Scope (should work)</h3>
+            <button class="button" onclick="window.fixedFunction1()">Fixed Function 1 (global)</button>
+            <button class="button" onclick="window.fixedFunction2()">Fixed Function 2 (global)</button>
+            <button class="button" onclick="window.fixedFunction3()">Fixed Function 3 (global)</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 3: addEventListener Approach (most reliable)</h3>
+            <button class="button" id="btn1">addEventListener Function 1</button>
+            <button class="button" id="btn2">addEventListener Function 2</button>
+            <button class="button" id="btn3">addEventListener Function 3</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test 4: Direct Console Tests</h3>
+            <button class="button" onclick="console.log('Direct console test works!')">Direct Console Test</button>
+            <button class="button" onclick="alert('Alert test works!')">Alert Test</button>
+            <button class="button" onclick="document.getElementById('output').innerHTML += '<p>Direct DOM test works!</p>'">Direct DOM Test</button>
+        </div>
+        
+        <button class="button" onclick="clearOutput()">Clear Output</button>
+        <button class="button" onclick="runCodePenDiagnostics()">Run CodePen Diagnostics</button>
+        
+        <div class="output" id="output">
+            <p>Output will appear here...</p>
+        </div>
+        
+        <div class="debug-info" id="debugInfo">
+            <h3>Debug Information:</h3>
+            <p>Initializing CodePen diagnostics...</p>
+        </div>
+        
+        <div class="console-output" id="consoleOutput">
+            <p>Console output will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        // ===== ORIGINAL CODE PEN STYLE (likely broken) =====
+        function testFunction1() {
+            console.log('testFunction1 called (original style)');
+            updateOutput('Original Function 1 executed!', 'success');
+        }
+        
+        function testFunction2() {
+            console.log('testFunction2 called (original style)');
+            updateOutput('Original Function 2 executed!', 'success');
+        }
+        
+        function testFunction3() {
+            console.log('testFunction3 called (original style)');
+            updateOutput('Original Function 3 executed!', 'success');
+        }
+        
+        // ===== FIXED GLOBAL SCOPE (CodePen compatible) =====
+        window.fixedFunction1 = function() {
+            console.log('fixedFunction1 called (global scope)');
+            updateOutput('Fixed Function 1 executed!', 'success');
+        };
+        
+        window.fixedFunction2 = function() {
+            console.log('fixedFunction2 called (global scope)');
+            updateOutput('Fixed Function 2 executed!', 'success');
+        };
+        
+        window.fixedFunction3 = function() {
+            console.log('fixedFunction3 called (global scope)');
+            updateOutput('Fixed Function 3 executed!', 'success');
+        };
+        
+        // ===== UTILITY FUNCTIONS =====
+        function updateOutput(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            output.innerHTML += `<p class="${className}">[${timestamp}] ${message}</p>`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function updateDebugInfo(message, type = 'info') {
+            const debugInfo = document.getElementById('debugInfo');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            debugInfo.innerHTML += `<p class="${className}">${message}</p>`;
+        }
+        
+        function clearOutput() {
+            console.log('clearOutput called');
+            document.getElementById('output').innerHTML = '<p>Output cleared...</p>';
+            document.getElementById('consoleOutput').innerHTML = '<p>Console output cleared...</p>';
+        }
+        
+        // ===== CODE PEN SPECIFIC DIAGNOSTICS =====
+        function runCodePenDiagnostics() {
+            console.log('Running CodePen specific diagnostics...');
+            updateOutput('Running CodePen specific diagnostics...', 'info');
+            
+            // Test original functions
+            const originalFunctions = ['testFunction1', 'testFunction2', 'testFunction3'];
+            originalFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    updateDebugInfo(`✅ ${funcName} is accessible in global scope`, 'success');
+                } else {
+                    updateDebugInfo(`❌ ${funcName} is NOT accessible in global scope (CodePen issue!)`, 'error');
+                }
+            });
+            
+            // Test fixed functions
+            const fixedFunctions = ['fixedFunction1', 'fixedFunction2', 'fixedFunction3'];
+            fixedFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    updateDebugInfo(`✅ ${funcName} is accessible in global scope`, 'success');
+                } else {
+                    updateDebugInfo(`❌ ${funcName} is NOT accessible in global scope`, 'error');
+                }
+            });
+            
+            // Test DOM elements
+            const elements = ['output', 'debugInfo', 'consoleOutput', 'btn1', 'btn2', 'btn3'];
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    updateDebugInfo(`✅ Element #${elementId} exists`, 'success');
+                } else {
+                    updateDebugInfo(`❌ Element #${elementId} does NOT exist`, 'error');
+                }
+            });
+            
+            // Test onclick handler accessibility
+            try {
+                // Test if onclick handlers can access functions
+                const testButton = document.createElement('button');
+                testButton.onclick = function() {
+                    if (typeof testFunction1 === 'function') {
+                        updateDebugInfo('✅ onclick handlers can access functions', 'success');
+                    } else {
+                        updateDebugInfo('❌ onclick handlers CANNOT access functions (CodePen issue!)', 'error');
+                    }
+                };
+                testButton.click();
+            } catch (error) {
+                updateDebugInfo(`❌ onclick handler test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded - CodePen style');
+            updateDebugInfo('✅ DOM loaded successfully', 'success');
+            updateDebugInfo('✅ JavaScript functions are defined', 'success');
+            
+            // Set up addEventListener buttons (most reliable approach)
+            const btn1 = document.getElementById('btn1');
+            const btn2 = document.getElementById('btn2');
+            const btn3 = document.getElementById('btn3');
+            
+            if (btn1) {
+                btn1.addEventListener('click', function() {
+                    console.log('addEventListener Function 1 called');
+                    updateOutput('addEventListener Function 1 executed!', 'success');
+                });
+                updateDebugInfo('✅ Button 1 event listener attached', 'success');
+            }
+            
+            if (btn2) {
+                btn2.addEventListener('click', function() {
+                    console.log('addEventListener Function 2 called');
+                    updateOutput('addEventListener Function 2 executed!', 'success');
+                });
+                updateDebugInfo('✅ Button 2 event listener attached', 'success');
+            }
+            
+            if (btn3) {
+                btn3.addEventListener('click', function() {
+                    console.log('addEventListener Function 3 called');
+                    updateOutput('addEventListener Function 3 executed!', 'success');
+                });
+                updateDebugInfo('✅ Button 3 event listener attached', 'success');
+            }
+            
+            // Test function accessibility
+            if (typeof testFunction1 === 'function') {
+                updateDebugInfo('✅ testFunction1 is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ testFunction1 is NOT accessible (CodePen scope issue!)', 'error');
+            }
+            
+            if (typeof window.fixedFunction1 === 'function') {
+                updateDebugInfo('✅ fixedFunction1 is accessible', 'success');
+            } else {
+                updateDebugInfo('❌ fixedFunction1 is NOT accessible', 'error');
+            }
+            
+            // Test global scope explicitly
+            if (typeof window.testFunction1 === 'function') {
+                updateDebugInfo('✅ testFunction1 is in global scope', 'success');
+            } else {
+                updateDebugInfo('❌ testFunction1 is NOT in global scope (CodePen issue!)', 'error');
+            }
+        });
+        
+        // ===== ERROR HANDLING =====
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            updateDebugInfo(`❌ JavaScript error: ${e.message}`, 'error');
+        });
+        
+        // ===== IMMEDIATE TEST =====
+        console.log('CodePen debug script loaded');
+        updateOutput('CodePen debug script loaded and ready for testing', 'success');
+        
+        // Test immediate global scope
+        if (typeof window.testFunction1 === 'function') {
+            console.log('testFunction1 is immediately available in global scope');
+        } else {
+            console.log('testFunction1 is NOT immediately available in global scope');
+        }
+    </script>
+</body>
+</html>
