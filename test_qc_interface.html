@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Interface Function Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quantum Computing Interface Function Test</h1>
+    <p>This page tests if all functions from your QC interface are properly defined and accessible.</p>
+    
+    <button onclick="runAllTests()">Run All Tests</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="testResults"></div>
+    
+    <h2>Common Issues Found in CodePen</h2>
+    <div id="commonIssues"></div>
+
+    <script>
+        // Define the functions that should exist in the QC interface
+        const expectedFunctions = [
+            'initializeQubits',
+            'applyHadamard',
+            'applyPauliX',
+            'applyPauliY',
+            'applyPauliZ',
+            'applyGate',
+            'runGroverAlgorithm',
+            'runShorAlgorithm',
+            'runDeutschAlgorithm',
+            'runBellState',
+            'measureQubits',
+            'calculateEntanglement',
+            'showQuantumState',
+            'resetSystem'
+        ];
+
+        // Test if a function exists and is callable
+        function testFunction(funcName) {
+            try {
+                if (typeof window[funcName] === 'function') {
+                    return { name: funcName, status: 'pass', message: 'Function is defined and accessible' };
+                } else if (typeof window[funcName] !== 'undefined') {
+                    return { name: funcName, status: 'fail', message: `Defined but not a function (type: ${typeof window[funcName]})` };
+                } else {
+                    return { name: funcName, status: 'fail', message: 'Function is not defined' };
+                }
+            } catch (e) {
+                return { name: funcName, status: 'fail', message: `Error: ${e.message}` };
+            }
+        }
+
+        // Run all tests
+        function runAllTests() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<h2>Test Results</h2>';
+            
+            let passCount = 0;
+            let failCount = 0;
+            
+            expectedFunctions.forEach(func => {
+                const result = testFunction(func);
+                const div = document.createElement('div');
+                div.className = `test-result ${result.status}`;
+                div.innerHTML = `<strong>${result.name}():</strong> ${result.message}`;
+                resultsDiv.appendChild(div);
+                
+                if (result.status === 'pass') passCount++;
+                else failCount++;
+            });
+            
+            // Summary
+            const summary = document.createElement('div');
+            summary.className = 'test-result ' + (failCount === 0 ? 'pass' : 'fail');
+            summary.innerHTML = `<h3>Summary: ${passCount} passed, ${failCount} failed</h3>`;
+            resultsDiv.insertBefore(summary, resultsDiv.firstChild.nextSibling);
+            
+            // If all fail, show diagnostic info
+            if (failCount === expectedFunctions.length) {
+                showDiagnostics();
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('testResults').innerHTML = '';
+        }
+
+        function showDiagnostics() {
+            const issues = document.getElementById('commonIssues');
+            issues.innerHTML = `
+                <div class="test-result fail">
+                    <h3>⚠️ All functions are missing! Common causes:</h3>
+                    <ol>
+                        <li><strong>In CodePen:</strong> Functions might be wrapped in an IIFE or jQuery ready block</li>
+                        <li><strong>Script not loaded:</strong> The QC interface script hasn't been included</li>
+                        <li><strong>Syntax error:</strong> Check browser console for JavaScript errors</li>
+                        <li><strong>Wrong scope:</strong> Functions defined inside another function or block</li>
+                    </ol>
+                    <h4>Quick Fix for CodePen:</h4>
+                    <pre>
+// Move all function definitions to the top level of your JS panel:
+function initializeQubits() {
+    // function code here
+}
+
+function applyHadamard() {
+    // function code here
+}
+
+// Don't wrap in $(document).ready() or (function() { })()
+                    </pre>
+                    <h4>Debug in Console:</h4>
+                    <pre>
+// Check what's in global scope:
+console.log(Object.keys(window).filter(k => k.includes('Qubit')));
+
+// Try defining a test function:
+window.testFunc = function() { alert('Works!'); };
+                    </pre>
+                </div>
+            `;
+        }
+
+        // Example of properly defined global functions
+        function exampleGlobalFunction() {
+            console.log('This function is properly defined in global scope');
+        }
+
+        // Show initial message
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('testResults').innerHTML = `
+                <div class="test-result">
+                    <p>Click "Run All Tests" to check if quantum computing functions are properly connected.</p>
+                    <p>This will test for the following functions:</p>
+                    <pre>${expectedFunctions.join('\n')}</pre>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

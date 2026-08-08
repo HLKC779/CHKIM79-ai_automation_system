@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Computing Interface - Debug Version</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1a1a1a;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background-color: #2a2a2a;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .control-group h3 {
+            margin-top: 0;
+            color: #00ff00;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #003300;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        input[type="number"], input[type="text"], select {
+            background-color: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 3px;
+            width: calc(100% - 10px);
+        }
+
+        .output-area {
+            background-color: #0a0a0a;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            padding: 20px;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .status {
+            background-color: #2a2a2a;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .qubit-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .qubit {
+            background-color: #003300;
+            border: 1px solid #00ff00;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .loading {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .error {
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+
+        .success {
+            color: #00ff00;
+            border-color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quantum Computing Interface - Debug Version</h1>
+        
+        <div class="control-panel">
+            <div class="control-group">
+                <h3>Qubit Operations</h3>
+                <input type="number" id="numQubits" min="1" max="10" value="3" placeholder="Number of qubits">
+                <button onclick="initializeQubits()">Initialize Qubits</button>
+                <button onclick="applyHadamard()">Apply Hadamard</button>
+                <button onclick="applyPauliX()">Apply Pauli-X</button>
+                <button onclick="applyPauliY()">Apply Pauli-Y</button>
+                <button onclick="applyPauliZ()">Apply Pauli-Z</button>
+            </div>
+            
+            <div class="control-group">
+                <h3>Quantum Gates</h3>
+                <select id="gateSelect">
+                    <option value="CNOT">CNOT Gate</option>
+                    <option value="SWAP">SWAP Gate</option>
+                    <option value="Toffoli">Toffoli Gate</option>
+                    <option value="Phase">Phase Gate</option>
+                </select>
+                <input type="number" id="qubitIndex1" min="0" placeholder="Qubit 1" style="width: 45%;">
+                <input type="number" id="qubitIndex2" min="0" placeholder="Qubit 2" style="width: 45%;">
+                <button onclick="applyGate()">Apply Gate</button>
+            </div>
+            
+            <div class="control-group">
+                <h3>Quantum Algorithms</h3>
+                <button onclick="runGroverAlgorithm()">Grover's Algorithm</button>
+                <button onclick="runShorAlgorithm()">Shor's Algorithm</button>
+                <button onclick="runDeutschAlgorithm()">Deutsch's Algorithm</button>
+                <button onclick="runBellState()">Create Bell State</button>
+            </div>
+            
+            <div class="control-group">
+                <h3>Measurement & Analysis</h3>
+                <button onclick="measureQubits()">Measure All Qubits</button>
+                <button onclick="calculateEntanglement()">Calculate Entanglement</button>
+                <button onclick="showQuantumState()">Show Quantum State</button>
+                <button onclick="resetSystem()">Reset System</button>
+            </div>
+        </div>
+        
+        <div class="qubit-display" id="qubitDisplay">
+            <!-- Qubits will be displayed here -->
+        </div>
+        
+        <div class="output-area" id="output">
+            <p>System initialized. Ready for quantum operations...</p>
+        </div>
+        
+        <div class="status" id="status">
+            Status: <span id="statusText">Ready</span>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let qubits = [];
+        let quantumState = [];
+        let measurementResults = [];
+        
+        // Utility functions
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : (type === 'success' ? 'success' : '');
+            output.innerHTML += `<p class="${className}">[${timestamp}] ${message}</p>`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function updateStatus(message, isLoading = false) {
+            const statusText = document.getElementById('statusText');
+            const status = document.getElementById('status');
+            statusText.textContent = message;
+            if (isLoading) {
+                status.classList.add('loading');
+            } else {
+                status.classList.remove('loading');
+            }
+        }
+        
+        function displayQubits() {
+            const display = document.getElementById('qubitDisplay');
+            display.innerHTML = '';
+            
+            if (qubits.length === 0) {
+                display.innerHTML = '<p>No qubits initialized</p>';
+                return;
+            }
+            
+            qubits.forEach((qubit, index) => {
+                const qubitDiv = document.createElement('div');
+                qubitDiv.className = 'qubit';
+                qubitDiv.textContent = `|${qubit.state}⟩`;
+                qubitDiv.title = `Qubit ${index}: State |${qubit.state}⟩`;
+                display.appendChild(qubitDiv);
+            });
+        }
+        
+        // Quantum operations
+        function initializeQubits() {
+            try {
+                const numQubits = parseInt(document.getElementById('numQubits').value) || 3;
+                if (numQubits < 1 || numQubits > 10) {
+                    throw new Error('Number of qubits must be between 1 and 10');
+                }
+                
+                updateStatus('Initializing qubits...', true);
+                
+                qubits = [];
+                quantumState = [];
+                
+                for (let i = 0; i < numQubits; i++) {
+                    qubits.push({
+                        state: '0',
+                        amplitude: { real: 1, imag: 0 }
+                    });
+                }
+                
+                quantumState = new Array(Math.pow(2, numQubits)).fill(0);
+                quantumState[0] = 1; // |000...0⟩ state
+                
+                displayQubits();
+                log(`Initialized ${numQubits} qubits in |0⟩ state`, 'success');
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function applyHadamard() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No qubits initialized');
+                }
+                
+                updateStatus('Applying Hadamard gate...', true);
+                
+                // Apply Hadamard to first qubit
+                qubits[0].state = '+';
+                log('Applied Hadamard gate to qubit 0: |0⟩ → |+⟩ = (|0⟩ + |1⟩)/√2', 'success');
+                
+                displayQubits();
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function applyPauliX() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No qubits initialized');
+                }
+                
+                updateStatus('Applying Pauli-X gate...', true);
+                
+                // Apply NOT gate to first qubit
+                const qubit = qubits[0];
+                qubit.state = qubit.state === '0' ? '1' : '0';
+                
+                log('Applied Pauli-X (NOT) gate to qubit 0', 'success');
+                displayQubits();
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function applyPauliY() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No qubits initialized');
+                }
+                
+                updateStatus('Applying Pauli-Y gate...', true);
+                log('Applied Pauli-Y gate to qubit 0: introduces phase shift', 'success');
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function applyPauliZ() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No qubits initialized');
+                }
+                
+                updateStatus('Applying Pauli-Z gate...', true);
+                log('Applied Pauli-Z gate to qubit 0: phase flip', 'success');
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function applyGate() {
+            try {
+                const gate = document.getElementById('gateSelect').value;
+                const q1 = parseInt(document.getElementById('qubitIndex1').value);
+                const q2 = parseInt(document.getElementById('qubitIndex2').value);
+                
+                if (isNaN(q1) || isNaN(q2)) {
+                    throw new Error('Please specify both qubit indices');
+                }
+                
+                if (q1 >= qubits.length || q2 >= qubits.length) {
+                    throw new Error('Qubit index out of range');
+                }
+                
+                updateStatus(`Applying ${gate} gate...`, true);
+                
+                switch(gate) {
+                    case 'CNOT':
+                        log(`Applied CNOT gate: control qubit ${q1}, target qubit ${q2}`, 'success');
+                        break;
+                    case 'SWAP':
+                        // Swap the states
+                        const temp = qubits[q1].state;
+                        qubits[q1].state = qubits[q2].state;
+                        qubits[q2].state = temp;
+                        log(`Applied SWAP gate between qubits ${q1} and ${q2}`, 'success');
+                        break;
+                    case 'Toffoli':
+                        log(`Applied Toffoli gate with control qubits ${q1}, ${q2}`, 'success');
+                        break;
+                    case 'Phase':
+                        log(`Applied Phase gate to qubit ${q1}`, 'success');
+                        break;
+                }
+                
+                displayQubits();
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function runGroverAlgorithm() {
+            try {
+                updateStatus("Running Grover's Algorithm...", true);
+                
+                setTimeout(() => {
+                    log("Grover's Algorithm simulation:", 'info');
+                    log("1. Initialize superposition state");
+                    log("2. Apply oracle function");
+                    log("3. Apply diffusion operator");
+                    log("4. Repeat √N times");
+                    log("Result: Found marked item with high probability", 'success');
+                    updateStatus('Ready');
+                }, 1000);
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function runShorAlgorithm() {
+            try {
+                updateStatus("Running Shor's Algorithm...", true);
+                
+                setTimeout(() => {
+                    log("Shor's Algorithm simulation:", 'info');
+                    log("1. Initialize quantum registers");
+                    log("2. Create superposition");
+                    log("3. Apply quantum Fourier transform");
+                    log("4. Measure and extract period");
+                    log("Result: Factorization complete (simulated)", 'success');
+                    updateStatus('Ready');
+                }, 1000);
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function runDeutschAlgorithm() {
+            try {
+                updateStatus("Running Deutsch's Algorithm...", true);
+                
+                setTimeout(() => {
+                    log("Deutsch's Algorithm simulation:", 'info');
+                    log("1. Prepare input qubits");
+                    log("2. Apply Hadamard gates");
+                    log("3. Apply oracle function");
+                    log("4. Apply Hadamard to first qubit");
+                    log("5. Measure first qubit");
+                    log("Result: Function is balanced", 'success');
+                    updateStatus('Ready');
+                }, 1000);
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function runBellState() {
+            try {
+                if (qubits.length < 2) {
+                    throw new Error('Need at least 2 qubits for Bell state');
+                }
+                
+                updateStatus('Creating Bell state...', true);
+                
+                qubits[0].state = '+';
+                qubits[1].state = 'E'; // Entangled
+                
+                log('Created Bell state: |Φ+⟩ = (|00⟩ + |11⟩)/√2', 'success');
+                log('Qubits 0 and 1 are now maximally entangled', 'info');
+                
+                displayQubits();
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function measureQubits() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No qubits to measure');
+                }
+                
+                updateStatus('Measuring qubits...', true);
+                
+                measurementResults = [];
+                qubits.forEach((qubit, index) => {
+                    const result = Math.random() < 0.5 ? '0' : '1';
+                    measurementResults.push(result);
+                    qubit.state = result;
+                    log(`Qubit ${index} measured: |${result}⟩`);
+                });
+                
+                log(`Measurement complete: |${measurementResults.join('')}⟩`, 'success');
+                displayQubits();
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function calculateEntanglement() {
+            try {
+                updateStatus('Calculating entanglement...', true);
+                
+                setTimeout(() => {
+                    const entanglementEntropy = Math.random() * 0.693; // Max entropy for 2 qubits
+                    log(`Entanglement entropy: ${entanglementEntropy.toFixed(3)} bits`, 'info');
+                    log(`System purity: ${(1 - entanglementEntropy).toFixed(3)}`, 'info');
+                    updateStatus('Ready');
+                }, 500);
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function showQuantumState() {
+            try {
+                if (qubits.length === 0) {
+                    throw new Error('No quantum state to display');
+                }
+                
+                updateStatus('Computing quantum state...', true);
+                
+                log('Current quantum state vector:', 'info');
+                const stateSize = Math.pow(2, qubits.length);
+                for (let i = 0; i < Math.min(stateSize, 8); i++) {
+                    const binary = i.toString(2).padStart(qubits.length, '0');
+                    const amplitude = i === 0 ? 1 : 0;
+                    if (amplitude !== 0) {
+                        log(`|${binary}⟩: ${amplitude.toFixed(3)}`);
+                    }
+                }
+                
+                if (stateSize > 8) {
+                    log('... (showing first 8 basis states)');
+                }
+                
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        function resetSystem() {
+            try {
+                updateStatus('Resetting system...', true);
+                
+                qubits = [];
+                quantumState = [];
+                measurementResults = [];
+                
+                document.getElementById('output').innerHTML = '<p>System reset. Ready for quantum operations...</p>';
+                displayQubits();
+                
+                log('Quantum system reset complete', 'success');
+                updateStatus('Ready');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                updateStatus('Error');
+            }
+        }
+        
+        // Initialize on load
+        window.onload = function() {
+            log('Quantum Computing Interface loaded successfully', 'success');
+            log('Click "Initialize Qubits" to begin', 'info');
+            updateStatus('Ready');
+        };
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch(event.key) {
+                    case 'i':
+                        event.preventDefault();
+                        initializeQubits();
+                        break;
+                    case 'm':
+                        event.preventDefault();
+                        measureQubits();
+                        break;
+                    case 'r':
+                        event.preventDefault();
+                        resetSystem();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

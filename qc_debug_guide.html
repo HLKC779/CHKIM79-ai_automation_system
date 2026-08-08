@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QC Interface Debug Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .issue {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .issue h2 {
+            color: #d00;
+            margin-top: 0;
+        }
+        .solution {
+            background: #f0f8ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .working-example {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .output {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quantum Computing Interface Debug Guide</h1>
+    
+    <div class="issue">
+        <h2>Issue #1: Functions Not Connected to Buttons</h2>
+        <p><strong>Symptoms:</strong> Clicking buttons does nothing, no errors in console</p>
+        
+        <div class="solution">
+            <h3>Common Causes & Solutions:</h3>
+            
+            <h4>1. Using onclick attribute (inline handlers)</h4>
+            <pre>
+&lt;!-- CORRECT: Function defined in global scope --&gt;
+&lt;button onclick="myFunction()"&gt;Click Me&lt;/button&gt;
+
+&lt;script&gt;
+function myFunction() {
+    console.log("Button clicked!");
+}
+&lt;/script&gt;</pre>
+            
+            <h4>2. Function not in global scope</h4>
+            <pre>
+&lt;!-- WRONG: Function inside jQuery ready --&gt;
+$(document).ready(function() {
+    function myFunction() { // Not accessible to onclick
+        console.log("Won't work!");
+    }
+});
+
+&lt;!-- CORRECT: Define globally --&gt;
+function myFunction() {
+    console.log("Works!");
+}
+
+$(document).ready(function() {
+    // Other initialization code
+});</pre>
+
+            <h4>3. Script loading order issues</h4>
+            <pre>
+&lt;!-- WRONG: Script before HTML --&gt;
+&lt;script&gt;
+    document.getElementById('myButton').onclick = function() {
+        // Element doesn't exist yet!
+    };
+&lt;/script&gt;
+&lt;button id="myButton"&gt;Click&lt;/button&gt;
+
+&lt;!-- CORRECT: Script after HTML or use DOMContentLoaded --&gt;
+&lt;button id="myButton"&gt;Click&lt;/button&gt;
+&lt;script&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('myButton').onclick = function() {
+            console.log("Works!");
+        };
+    });
+&lt;/script&gt;</pre>
+        </div>
+    </div>
+
+    <div class="issue">
+        <h2>Issue #2: Event Listeners Not Working</h2>
+        <p><strong>Symptoms:</strong> addEventListener doesn't trigger, jQuery click() not working</p>
+        
+        <div class="solution">
+            <h3>Solutions:</h3>
+            
+            <h4>1. Element doesn't exist when code runs</h4>
+            <pre>
+// WRONG: Element might not exist yet
+document.getElementById('myBtn').addEventListener('click', function() {
+    console.log('Clicked');
+});
+
+// CORRECT: Wait for DOM
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('myBtn').addEventListener('click', function() {
+        console.log('Clicked');
+    });
+});</pre>
+
+            <h4>2. jQuery not loaded or conflicts</h4>
+            <pre>
+// Check if jQuery is loaded
+if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded!');
+}
+
+// Use jQuery in no-conflict mode
+jQuery(document).ready(function($) {
+    $('#myButton').click(function() {
+        console.log('jQuery click works!');
+    });
+});</pre>
+        </div>
+    </div>
+
+    <div class="issue">
+        <h2>Issue #3: CodePen Specific Issues</h2>
+        <p><strong>Symptoms:</strong> Code works locally but not in CodePen</p>
+        
+        <div class="solution">
+            <h3>CodePen Settings to Check:</h3>
+            <ol>
+                <li><strong>JavaScript Settings:</strong> Add external scripts (jQuery, etc.) in Settings → JS</li>
+                <li><strong>Preprocessors:</strong> Make sure you're not using Babel/TypeScript if writing vanilla JS</li>
+                <li><strong>Console:</strong> Open CodePen console to see errors (bottom-left icon)</li>
+                <li><strong>HTML Comments:</strong> Unclosed comments can break everything</li>
+            </ol>
+            
+            <h4>Working CodePen Template:</h4>
+            <pre>
+// JS Section (no need for &lt;script&gt; tags)
+// Functions are automatically in global scope
+
+function handleClick() {
+    console.log("Button clicked!");
+    document.getElementById('output').innerHTML = "Working!";
+}
+
+// jQuery example (if jQuery is added in settings)
+$(document).ready(function() {
+    $('#jqueryBtn').click(function() {
+        $('#output').append('&lt;br&gt;jQuery works too!');
+    });
+});</pre>
+        </div>
+    </div>
+
+    <div class="working-example">
+        <h2>Working Example: Test Your Buttons</h2>
+        <p>Test these working examples:</p>
+        
+        <button onclick="testInline()">Inline onclick</button>
+        <button id="addEventBtn">addEventListener</button>
+        <button id="jqueryBtn">jQuery (if loaded)</button>
+        
+        <div id="output" class="output">Click buttons to test...</div>
+        
+        <script>
+            // Global function for inline onclick
+            function testInline() {
+                document.getElementById('output').innerHTML = 'Inline onclick works! ✓';
+            }
+            
+            // addEventListener example
+            document.addEventListener('DOMContentLoaded', function() {
+                const btn = document.getElementById('addEventBtn');
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        document.getElementById('output').innerHTML = 'addEventListener works! ✓';
+                    });
+                }
+                
+                // jQuery example (with safety check)
+                if (typeof jQuery !== 'undefined') {
+                    jQuery('#jqueryBtn').click(function() {
+                        jQuery('#output').html('jQuery works! ✓');
+                    });
+                } else {
+                    document.getElementById('jqueryBtn').addEventListener('click', function() {
+                        document.getElementById('output').innerHTML = 'jQuery not loaded, using vanilla JS ✓';
+                    });
+                }
+            });
+        </script>
+    </div>
+
+    <div class="issue">
+        <h2>Debugging Checklist</h2>
+        <div class="solution">
+            <h3>When buttons don't work, check:</h3>
+            <ol>
+                <li>✓ Open browser console (F12) - Any errors?</li>
+                <li>✓ Is the function defined? Type its name in console</li>
+                <li>✓ Is the function in global scope?</li>
+                <li>✓ Are all HTML tags properly closed?</li>
+                <li>✓ Is JavaScript enabled in the browser?</li>
+                <li>✓ For CodePen: Check JS settings and external scripts</li>
+                <li>✓ Try a simple alert() to test if ANY JavaScript works</li>
+                <li>✓ Check for typos in function names and IDs</li>
+            </ol>
+            
+            <h3>Quick Debug Code:</h3>
+            <pre>
+// Paste this in console to check all buttons
+document.querySelectorAll('button').forEach((btn, i) => {
+    console.log(`Button ${i}:`, {
+        text: btn.textContent,
+        onclick: btn.onclick,
+        listeners: getEventListeners ? getEventListeners(btn) : 'N/A'
+    });
+});</pre>
+        </div>
+    </div>
+
+    <div class="issue">
+        <h2>Fixed Quantum Computing Interface</h2>
+        <p>The quantum computing interface has been debugged with these fixes:</p>
+        <div class="solution">
+            <ol>
+                <li>✓ All functions defined in global scope</li>
+                <li>✓ Proper error handling with try-catch blocks</li>
+                <li>✓ Visual feedback for all operations</li>
+                <li>✓ Status updates and loading indicators</li>
+                <li>✓ Input validation to prevent errors</li>
+                <li>✓ Console logging for debugging</li>
+                <li>✓ Keyboard shortcuts (Ctrl+I, Ctrl+M, Ctrl+R)</li>
+            </ol>
+            <p><strong>Test it:</strong> Open <code>qc_interface.html</code> in your browser</p>
+        </div>
+    </div>
+</body>
+</html>
